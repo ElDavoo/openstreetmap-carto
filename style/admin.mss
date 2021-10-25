@@ -497,10 +497,6 @@ Then all three layers are added to the rendering with comp-op: darken, so that t
     [zoom >= 8][zoom < 10] {
       opacity: 0.25;
       line-width: 1.2;
-      line-color: @protected-area;
-      [boundary = 'aboriginal_lands'] {
-        line-color: @aboriginal;
-      }
       [zoom >= 9] {
         line-width: 1.5;
       }
@@ -517,10 +513,6 @@ Then all three layers are added to the rendering with comp-op: darken, so that t
         // also applies to inner rings of multipolygons.) So a negative
         // line-offset is always an offset to the inner side of the polygon.
         line-offset: -0.9;
-        line-color: @protected-area;
-        [boundary = 'aboriginal_lands'] {
-          line-color: @aboriginal;
-        }
         line-join: round;
         line-cap: round;
         [zoom >= 12] {
@@ -536,10 +528,6 @@ Then all three layers are added to the rendering with comp-op: darken, so that t
       ::narrowline {
         opacity: 0.15;
         line-width: 1.8;
-        line-color: @protected-area;
-        [boundary = 'aboriginal_lands'] {
-          line-color: @aboriginal;
-        }
         line-join: round;
         line-cap: round;
         [zoom >= 12] {

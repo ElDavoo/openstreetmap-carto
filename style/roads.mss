@@ -1217,7 +1217,14 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
       [construction = 'cycleway'][zoom >= 15],
       [construction = 'bridleway'][zoom >= 15],
       [construction = 'path'][zoom >= 15],
-      [construction = 'track'][zoom >= 15]
+      [construction = 'track'][zoom >= 15] {
+        line-color: white;
+        line-width: 3;
+        line-opacity: 0.4;
+        b/line-width: 1.2;
+        b/line-color: @minor-construction;
+        b/line-dasharray: 2,6;
+      }
     }
 
     [feature = 'highway_motorway'] {

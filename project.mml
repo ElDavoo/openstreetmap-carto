@@ -54,7 +54,7 @@ Layer:
       table: |-
         (SELECT
             way, way_pixels,
-            COALESCE(wetland, landuse, "natural") AS feature
+            COALESCE(wetland, "natural") AS feature
           FROM (SELECT
               way,
               ('natural_' || (CASE WHEN "natural" IN ('wood', 'sand', 'scree', 'shingle', 'bare_rock', 'heath', 'grassland', 'scrub') THEN "natural" END)) AS "natural",

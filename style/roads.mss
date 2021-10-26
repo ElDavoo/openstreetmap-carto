@@ -637,27 +637,6 @@
       }
     }
 
-    [feature = 'highway_steps'] {
-      #bridges {
-        [zoom >= 14][access != 'no'],
-        [zoom >= 15] {
-          line-width: @steps-width-z14 + 2 * (@paths-background-width + @paths-bridge-casing-width);
-          [zoom >= 15] { line-width: @steps-width-z15 + 2 * (@paths-background-width + @paths-bridge-casing-width); }
-          line-color: @bridge-casing;
-          line-join: round;
-        }
-      }
-      #tunnels {
-        [zoom >= 14][access != 'no'],
-        [zoom >= 15] {
-          line-width: @steps-width-z14 + 2 * (@paths-background-width + @paths-tunnel-casing-width);
-          [zoom >= 15] { line-width: @steps-width-z15 + 2 * (@paths-background-width + @paths-tunnel-casing-width); }
-          line-color: @tunnel-casing;
-          line-dasharray: 4,2;
-        }
-      }
-    }
-
     [feature = 'highway_bridleway'],
     [feature = 'highway_path'][horse = 'designated'] {
       #bridges {
@@ -854,28 +833,6 @@
           [zoom >= 16] { line-width: @cycleway-width-z16 + 2 * @paths-background-width; }
           [zoom >= 18] { line-width: @cycleway-width-z18 + 2 * @paths-background-width; }
           [zoom >= 19] { line-width: @cycleway-width-z19 + 2 * @paths-background-width; }
-        }
-      }
-    }
-
-    [feature = 'highway_steps'] {
-      #bridges {
-        [zoom >= 14][access != 'no'],
-        [zoom >= 15] {
-          line-width: @steps-width-z14 + 2 * @paths-background-width;
-          [zoom >= 15] { line-width: @steps-width-z15 + 2 * @paths-background-width; }
-          line-color: @steps-casing;
-          line-join: round;
-        }
-      }
-      #tunnels {
-        [zoom >= 14][access != 'no'],
-        [zoom >= 15] {
-          line-color: @steps-casing;
-          line-cap: round;
-          line-join: round;
-          line-width: @steps-width-z14 + 2 * @paths-background-width;
-          [zoom >= 15] { line-width: @steps-width-z15 + 2 * @paths-background-width; }
         }
       }
     }
@@ -1260,15 +1217,7 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
       [construction = 'cycleway'][zoom >= 15],
       [construction = 'bridleway'][zoom >= 15],
       [construction = 'path'][zoom >= 15],
-      [construction = 'track'][zoom >= 15],
-      [construction = 'steps'][zoom >= 15] {
-        line-color: white;
-        line-width: 3;
-        line-opacity: 0.4;
-        b/line-width: 1.2;
-        b/line-color: @minor-construction;
-        b/line-dasharray: 2,6;
-      }
+      [construction = 'track'][zoom >= 15]
     }
 
     [feature = 'highway_motorway'] {
@@ -1718,24 +1667,6 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
         b/line-color: #bbbbbb;
         b/line-cap: round;
         b/line-join: round;
-      }
-    }
-
-    [feature = 'highway_steps'] {
-      [zoom >= 14][access != 'no'],
-      [zoom >= 15] {
-        #roads-fill[zoom >= 15] {
-          background/line-color: @steps-casing;
-          background/line-cap: round;
-          background/line-join: round;
-          background/line-width: @steps-width-z15 + 2 * @paths-background-width;
-          background/line-opacity: 0.4;
-        }
-        line/line-color: @steps-fill;
-        [access = 'no'] { line/line-color: @steps-fill-noaccess; }
-        line/line-dasharray: 2,1;
-        line/line-width: @steps-width-z14;
-        [zoom >= 15] { line/line-width:  @steps-width-z15; }
       }
     }
 
@@ -3250,11 +3181,9 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
   [highway = 'bridleway'],
   [highway = 'cycleway'],
   [highway = 'path'],
-  [highway = 'steps'],
   [highway = 'construction'][construction = 'bridleway'],
   [highway = 'construction'][construction = 'cycleway'],
-  [highway = 'construction'][construction = 'path'],
-  [highway = 'construction'][construction = 'steps'] {
+  [highway = 'construction'][construction = 'path'] {
     [zoom >= 16] {
       text-name: "[name]";
       text-fill: #222;
@@ -3268,7 +3197,6 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
       text-vertical-alignment: middle;
       text-dy: 7;
       text-repeat-distance: @major-highway-text-repeat-distance;
-      [highway = 'steps'] { text-repeat-distance: @minor-highway-text-repeat-distance; }
     }
     [zoom >= 17] {
       text-size: 11;
@@ -3346,7 +3274,6 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
       }
     }
 
-    [highway = 'steps'],
     [highway = 'cycleway'],
     [highway = 'path'],
     [highway = 'track'],
@@ -3377,9 +3304,6 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
           [bicycle = 'designated'] {
             text-fill: @cycleway-oneway-arrow-color;
           }
-        }
-        [highway = 'steps'] {
-          text-fill: @steps-oneway-arrow-color;
         }
         [highway = 'cycleway'] {
           text-fill: @cycleway-oneway-arrow-color;

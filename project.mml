@@ -1603,7 +1603,7 @@ Layer:
             horse,
             bicycle
           FROM planet_osm_line
-          WHERE highway IN ('bridleway', 'cycleway', 'path', 'track', 'steps', 'construction')
+          WHERE highway IN ('bridleway', 'cycleway', 'path', 'track', 'construction')
             AND (name IS NOT NULL
               OR oneway IN ('yes', '-1')
               OR junction IN ('roundabout'))

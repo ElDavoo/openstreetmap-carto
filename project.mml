@@ -367,7 +367,6 @@ Layer:
             (CASE WHEN feature IN ('highway_motorway_link', 'highway_trunk_link', 'highway_primary_link', 'highway_secondary_link', 'highway_tertiary_link') THEN substr(feature, 0, length(feature)-4) ELSE feature END) AS feature,
             horse,
             foot,
-            bicycle,
             tracktype,
             int_surface,
             access,
@@ -381,7 +380,6 @@ Layer:
                 'highway_' || highway AS feature, --only motorway to tertiary links are accepted later on
                 horse,
                 foot,
-                bicycle,
                 tracktype,
                 CASE WHEN surface IN ('unpaved', 'compacted', 'dirt', 'earth', 'fine_gravel', 'grass', 'grass_paver', 'gravel', 'ground',
                                       'mud', 'pebblestone', 'salt', 'sand', 'woodchips', 'clay', 'ice', 'snow') THEN 'unpaved'
@@ -414,7 +412,6 @@ Layer:
                                  ELSE railway END) AS feature,
                 horse,
                 foot,
-                bicycle,
                 tracktype,
                 'null',
                 CASE
@@ -602,7 +599,6 @@ Layer:
             (CASE WHEN feature IN ('highway_motorway_link', 'highway_trunk_link', 'highway_primary_link', 'highway_secondary_link', 'highway_tertiary_link') THEN substr(feature, 0, length(feature)-4) ELSE feature END) AS feature,
             horse,
             foot,
-            bicycle,
             tracktype,
             int_surface,
             access,
@@ -616,7 +612,6 @@ Layer:
                 ('highway_' || highway) AS feature, --only motorway to tertiary links are accepted later on
                 horse,
                 foot,
-                bicycle,
                 tracktype,
                 CASE WHEN surface IN ('unpaved', 'compacted', 'dirt', 'earth', 'fine_gravel', 'grass', 'grass_paver', 'gravel', 'ground',
                                       'mud', 'pebblestone', 'salt', 'sand', 'woodchips', 'clay', 'ice', 'snow') THEN 'unpaved'
@@ -652,7 +647,6 @@ Layer:
                                      ELSE railway END)) AS feature,
                 horse,
                 foot,
-                bicycle,
                 tracktype,
                 'null',
                 CASE
@@ -824,7 +818,6 @@ Layer:
             (CASE WHEN feature IN ('highway_motorway_link', 'highway_trunk_link', 'highway_primary_link', 'highway_secondary_link', 'highway_tertiary_link') THEN substr(feature, 0, length(feature)-4) ELSE feature END) AS feature,
             horse,
             foot,
-            bicycle,
             tracktype,
             int_surface,
             access,
@@ -838,7 +831,6 @@ Layer:
                 'highway_' || highway AS feature, --only motorway to tertiary links are accepted later on
                 horse,
                 foot,
-                bicycle,
                 tracktype,
                 CASE WHEN surface IN ('unpaved', 'compacted', 'dirt', 'earth', 'fine_gravel', 'grass', 'grass_paver', 'gravel', 'ground',
                                       'mud', 'pebblestone', 'salt', 'sand', 'woodchips', 'clay', 'ice', 'snow') THEN 'unpaved'
@@ -871,7 +863,6 @@ Layer:
                                  ELSE railway END) AS feature,
                 horse,
                 foot,
-                bicycle,
                 tracktype,
                 'null',
                 CASE
@@ -1448,7 +1439,7 @@ Layer:
               WHEN oneway IN ('yes', '-1') THEN oneway
               WHEN junction IN ('roundabout') AND (oneway IS NULL OR NOT oneway IN ('no', 'reversible')) THEN 'yes'
             END AS oneway,
-            horse, bicycle
+            horse
           FROM planet_osm_line l
           WHERE highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary',
                             'tertiary_link', 'residential', 'unclassified', 'road', 'service', 'pedestrian', 'raceway', 'living_street', 'construction')
@@ -1480,10 +1471,9 @@ Layer:
               WHEN oneway IN ('yes', '-1') THEN oneway
               WHEN junction IN ('roundabout') AND (oneway IS NULL OR NOT oneway IN ('no', 'reversible')) THEN 'yes'
             END AS oneway,
-            horse,
-            bicycle
+            horse
           FROM planet_osm_line
-          WHERE highway IN ('bridleway', 'cycleway', 'path', 'construction')
+          WHERE highway IN ('bridleway', 'path', 'construction')
             AND (name IS NOT NULL
               OR oneway IN ('yes', '-1')
               OR junction IN ('roundabout'))

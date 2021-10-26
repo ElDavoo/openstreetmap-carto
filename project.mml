@@ -40,7 +40,6 @@ Stylesheet:
   - style/water-features.mss
   - style/road-colors-generated.mss
   - style/roads.mss
-  - style/power.mss
   - style/placenames.mss
   - style/ferry-routes.mss
   - style/aerialways.mss
@@ -84,7 +83,7 @@ Layer:
       table: |-
         (SELECT
             way, name, religion, way_pixels, is_building,
-            COALESCE(aeroway, golf, amenity, wetland, power, landuse, leisure, man_made, "natural", shop, tourism, highway, railway) AS feature
+            COALESCE(aeroway, golf, amenity, wetland, landuse, leisure, man_made, "natural", shop, tourism, highway, railway) AS feature
           FROM (SELECT
               way, COALESCE(name, '') AS name,
               ('aeroway_' || (CASE WHEN aeroway IN ('apron', 'aerodrome') THEN aeroway END)) AS aeroway,
@@ -105,7 +104,6 @@ Layer:
               ('man_made_' || (CASE WHEN man_made IN ('works', 'wastewater_plant', 'water_works') THEN man_made END)) AS man_made,
               ('natural_' || (CASE WHEN "natural" IN ('beach', 'shoal', 'heath', 'grassland', 'wood', 'sand', 'scree', 'shingle', 'bare_rock', 'scrub') THEN "natural" END)) AS "natural",
               ('wetland_' || (CASE WHEN "natural" IN ('wetland', 'mud') THEN (CASE WHEN "natural" = 'mud' THEN "natural" ELSE tags->'wetland' END) END)) AS wetland,
-              ('power_' || (CASE WHEN power IN ('plant', 'substation', 'generator') THEN power END)) AS power,
               ('tourism_' || (CASE WHEN tourism IN ('camp_site', 'caravan_site', 'picnic_site') THEN tourism END)) AS tourism,
               ('highway_' || (CASE WHEN highway IN ('services', 'rest_area') THEN highway END)) AS highway,
               ('railway_' || (CASE WHEN railway = 'station' THEN railway END)) AS railway,
@@ -123,7 +121,6 @@ Layer:
                              'arts_centre', 'parking_space', 'bus_station', 'fire_station', 'police')
               OR man_made IN ('works', 'wastewater_plant','water_works')
               OR "natural" IN ('beach', 'shoal', 'heath', 'mud', 'wetland', 'grassland', 'wood', 'sand', 'scree', 'shingle', 'bare_rock', 'scrub')
-              OR power IN ('plant', 'substation', 'generator')
               OR shop IN ('mall')
               OR tourism IN ('camp_site', 'caravan_site', 'picnic_site')
               OR highway IN ('services', 'rest_area')
@@ -1101,32 +1098,6 @@ Layer:
         ) AS admin_high_zoom
     properties:
       minzoom: 13
-  - id: power-minorline
-    geometry: linestring
-    <<: *extents
-    Datasource:
-      <<: *osm2pgsql
-      table: |-
-        (SELECT
-            way
-          FROM planet_osm_line
-          WHERE power = 'minor_line'
-        ) AS power_minorline
-    properties:
-      minzoom: 16
-  - id: power-line
-    geometry: linestring
-    <<: *extents
-    Datasource:
-      <<: *osm2pgsql
-      table: |-
-        (SELECT
-            way
-          FROM planet_osm_line
-          WHERE power = 'line'
-        ) AS power_line
-    properties:
-      minzoom: 14
   - id: protected-areas
     geometry: polygon
     <<: *extents
@@ -1411,25 +1382,6 @@ Layer:
         ) AS amenity_line
     properties:
       minzoom: 16
-  - id: power-towers
-    geometry: point
-    <<: *extents
-    Datasource:
-      <<: *osm2pgsql
-      table: |-
-        (SELECT
-            way,
-            power
-        FROM planet_osm_point
-        WHERE power IN ('tower', 'pole')
-        ORDER BY
-          CASE power
-            WHEN 'tower' THEN 2
-            WHEN 'pole' THEN 1
-          END DESC
-        ) AS power_towers
-    properties:
-      minzoom: 14
   - id: roads-text-ref-low-zoom
     geometry: linestring
     <<: *extents

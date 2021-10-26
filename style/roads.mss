@@ -2738,6 +2738,7 @@ tertiary is rendered from z10 and is not included in osm_planet_roads. */
       text-clip: false;
     }
   }
+}
 
 #roads-text-name {
   [highway = 'motorway'],

@@ -80,7 +80,7 @@ Layer:
       table: |-
         (SELECT
             way, name, religion, way_pixels, is_building,
-            COALESCE(aeroway, golf, wetland, landuse, leisure, man_made, "natural", shop, tourism, highway, railway) AS feature
+            COALESCE(wetland, leisure, "natural", highway, railway) AS feature
           FROM (SELECT
               way, COALESCE(name, '') AS name,
               ('leisure_' || (CASE WHEN leisure IN ('swimming_pool', 'playground', 'park', 'recreation_ground', 'garden',

@@ -101,7 +101,7 @@ Layer:
               ('shop_' || (CASE WHEN shop IN ('mall') AND (tags->'location' NOT IN ('underground') OR (tags->'location') IS NULL) THEN shop END)) AS shop,
               ('leisure_' || (CASE WHEN leisure IN ('swimming_pool', 'playground', 'park', 'recreation_ground', 'garden',
                                                     'golf_course', 'miniature_golf', 'sports_centre', 'stadium', 'pitch', 'ice_rink',
-                                                    'track', 'dog_park', 'fitness_station', 'water_park') THEN leisure END)) AS leisure,
+                                                    'dog_park', 'fitness_station', 'water_park') THEN leisure END)) AS leisure,
               ('man_made_' || (CASE WHEN man_made IN ('works', 'wastewater_plant', 'water_works') THEN man_made END)) AS man_made,
               ('natural_' || (CASE WHEN "natural" IN ('beach', 'shoal', 'heath', 'grassland', 'wood', 'sand', 'scree', 'shingle', 'bare_rock', 'scrub') THEN "natural" END)) AS "natural",
               ('wetland_' || (CASE WHEN "natural" IN ('wetland', 'mud') THEN (CASE WHEN "natural" = 'mud' THEN "natural" ELSE tags->'wetland' END) END)) AS wetland,
@@ -1399,13 +1399,13 @@ Layer:
           way,
           COALESCE(
            'highway_' || CASE WHEN tags @> 'ford=>yes' OR tags @> 'ford=>stepping_stones' THEN 'ford' END,
-           'leisure_' || CASE WHEN leisure IN ('slipway', 'track') THEN leisure END,
+           'leisure_' || CASE WHEN leisure IN ('slipway') THEN leisure END,
            'attraction_' || CASE WHEN tags @> 'attraction=>water_slide' THEN 'water_slide' END
             ) AS feature
           FROM planet_osm_line
           -- The upcoming where clause is needed for performance only, as the CASE statements would end up doing the equivalent filtering
           WHERE tags @> 'ford=>yes' OR tags @> 'ford=>stepping_stones'
-            OR leisure IN ('slipway', 'track')
+            OR leisure IN ('slipway')
             OR tags @> 'attraction=>water_slide'
           ORDER BY COALESCE(layer,0)
         ) AS amenity_line
@@ -1603,7 +1603,7 @@ Layer:
             horse,
             bicycle
           FROM planet_osm_line
-          WHERE highway IN ('bridleway', 'cycleway', 'path', 'track', 'construction')
+          WHERE highway IN ('bridleway', 'cycleway', 'path', 'construction')
             AND (name IS NOT NULL
               OR oneway IN ('yes', '-1')
               OR junction IN ('roundabout'))
@@ -1666,10 +1666,10 @@ Layer:
                 SELECT
                     osm_id,
                     way,
-                    CASE WHEN highway IN ('unclassified', 'residential', 'track') THEN highway END AS highway,
+                    CASE WHEN highway IN ('unclassified', 'residential') THEN highway END AS highway,
                     string_to_array(ref, ';') AS refs
                   FROM planet_osm_line
-                  WHERE highway IN ('unclassified', 'residential', 'track')
+                  WHERE highway IN ('unclassified', 'residential')
                     AND ref IS NOT NULL
               ) AS p) AS q
           WHERE height <= 4 AND width <= 11
@@ -1677,7 +1677,6 @@ Layer:
             CASE
               WHEN highway = 'unclassified' THEN 33
               WHEN highway = 'residential' THEN 32
-              WHEN highway = 'track' THEN 30
             END DESC NULLS LAST,
             height DESC,
             width DESC,
@@ -1749,7 +1748,7 @@ Layer:
                  OR bridge IN ('yes', 'aqueduct', 'cantilever', 'covered', 'trestle', 'viaduct'))
               OR tags @> 'attraction=>water_slide'
               OR aerialway IN ('cable_car', 'gondola', 'mixed_lift', 'goods', 'chair_lift', 'drag_lift', 't-bar', 'j-bar', 'platter', 'rope_tow', 'zip_line')
-              OR leisure IN ('slipway', 'track')
+              OR leisure IN ('slipway')
               OR waterway IN ('dam', 'weir')
               OR "natural" IN ('arete', 'cliff', 'ridge'))
             AND name IS NOT NULL)

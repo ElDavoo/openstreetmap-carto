@@ -442,24 +442,6 @@ Layer:
       cache-features: true
       group-by: layernotnull
       minzoom: 10
-  - id: landuse-overlay
-    geometry: polygon
-    <<: *extents
-    Datasource:
-      <<: *osm2pgsql
-      table: |-
-        (SELECT
-            way,
-            landuse,
-            military,
-            way_area/NULLIF(POW(!scale_denominator!*0.001*0.28,2),0) AS way_pixels
-          FROM planet_osm_polygon
-          WHERE (landuse = 'military'
-            OR military = 'danger_area')
-            AND building IS NULL
-        ) AS landuse_overlay
-    properties:
-      minzoom: 8
   - id: tourism-boundary
     geometry: polygon
     <<: *extents
@@ -1562,8 +1544,7 @@ Layer:
             ST_PointOnSurface(way) AS way,
             way_area/NULLIF(POW(!scale_denominator!*0.001*0.28,2),0) AS way_pixels,
             COALESCE(
-              'landuse_' || CASE WHEN landuse IN ('forest', 'military', 'farmland') THEN landuse END,
-              'military_' || CASE WHEN military IN ('danger_area') THEN military END,
+              'landuse_' || CASE WHEN landuse IN ('forest', 'farmland') THEN landuse END,
               'natural_' || CASE WHEN "natural" IN ('wood', 'glacier', 'sand', 'scree', 'shingle', 'bare_rock',
                                                     'water', 'bay', 'strait') THEN "natural" END,
               'place_' || CASE WHEN place IN ('island') THEN place END,
@@ -1577,8 +1558,7 @@ Layer:
           FROM planet_osm_polygon
           WHERE ST_PointOnSurface(way) && !bbox!
             AND name IS NOT NULL
-            AND (landuse IN ('forest', 'military', 'farmland')
-              OR military IN ('danger_area')
+            AND (landuse IN ('forest', 'farmland')
               OR "natural" IN ('wood', 'glacier', 'sand', 'scree', 'shingle', 'bare_rock', 'water', 'bay', 'strait')
               OR "place" IN ('island')
               OR boundary IN ('aboriginal_lands', 'national_park')

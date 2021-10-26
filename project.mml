@@ -42,7 +42,6 @@ Stylesheet:
   - style/roads.mss
   - style/power.mss
   - style/placenames.mss
-  - style/buildings.mss
   - style/ferry-routes.mss
   - style/aerialways.mss
   - style/admin.mss
@@ -412,27 +411,6 @@ Layer:
         ) AS bridge
     properties:
       minzoom: 12
-  - id: buildings
-    geometry: polygon
-    <<: *extents
-    Datasource:
-      <<: *osm2pgsql
-      table: |-
-        (SELECT
-            way,
-            building,
-            amenity,
-            aeroway,
-            aerialway,
-            tags->'public_transport' as public_transport
-          FROM planet_osm_polygon
-          WHERE building IS NOT NULL
-            AND building != 'no'
-            AND way_area > 1*!pixel_width!::real*!pixel_height!::real
-          ORDER BY COALESCE(layer,0), way_area DESC
-        ) AS buildings
-    properties:
-      minzoom: 14
   - id: tunnels
     geometry: linestring
     <<: *extents
@@ -667,7 +645,7 @@ Layer:
         (SELECT
             way,
             COALESCE((
-              'highway_' || (CASE WHEN highway IN ('pedestrian', 'footway', 'service', 'platform') THEN highway END)),
+              'highway_' || (CASE WHEN highway IN ('pedestrian', 'service', 'platform') THEN highway END)),
               ('railway_' || (CASE WHEN (railway IN ('platform')
                               AND (tags->'location' NOT IN ('underground') OR (tags->'location') IS NULL)
                               AND (tunnel NOT IN ('yes', 'building_passage') OR tunnel IS NULL)
@@ -675,7 +653,7 @@ Layer:
                               THEN railway END))
             ) AS feature
           FROM planet_osm_polygon
-          WHERE highway IN ('pedestrian', 'footway', 'service', 'platform')
+          WHERE highway IN ('pedestrian', 'service', 'platform')
             OR (railway IN ('platform')
                 AND (tags->'location' NOT IN ('underground') OR (tags->'location') IS NULL)
                 AND (tunnel NOT IN ('yes', 'building_passage') OR tunnel IS NULL)
@@ -789,7 +767,7 @@ Layer:
         (SELECT
             way,
             COALESCE(
-              ('highway_' || (CASE WHEN highway IN ('pedestrian', 'footway', 'service', 'living_street',
+              ('highway_' || (CASE WHEN highway IN ('pedestrian', 'service', 'living_street',
                                                     'platform', 'services') THEN highway END)),
               ('railway_' || (CASE WHEN (railway IN ('platform')
                               AND (tags->'location' NOT IN ('underground') OR (tags->'location') IS NULL)
@@ -799,7 +777,7 @@ Layer:
               (('aeroway_' || CASE WHEN aeroway IN ('runway', 'taxiway', 'helipad') THEN aeroway END))
             ) AS feature
           FROM planet_osm_polygon
-          WHERE highway IN ('pedestrian', 'footway', 'service', 'living_street', 'platform', 'services')
+          WHERE highway IN ('pedestrian', 'service', 'living_street', 'platform', 'services')
             OR (railway IN ('platform')
                 AND (tags->'location' NOT IN ('underground') OR (tags->'location') IS NULL)
                 AND (tunnel NOT IN ('yes', 'building_passage') OR tunnel IS NULL)
@@ -1563,7 +1541,7 @@ Layer:
           FROM planet_osm_polygon
           WHERE ST_PointOnSurface(way) && !bbox!
             AND name IS NOT NULL
-            AND (highway IN ('pedestrian', 'footway', 'service', 'living_street', 'platform')
+            AND (highway IN ('pedestrian', 'service', 'living_street', 'platform')
               OR (railway IN ('platform')
                   AND (tags->'location' NOT IN ('underground') OR (tags->'location') IS NULL)
                   AND (tunnel NOT IN ('yes', 'building_passage') OR tunnel IS NULL)
@@ -1625,7 +1603,7 @@ Layer:
             horse,
             bicycle
           FROM planet_osm_line
-          WHERE highway IN ('bridleway', 'footway', 'cycleway', 'path', 'track', 'steps', 'construction')
+          WHERE highway IN ('bridleway', 'cycleway', 'path', 'track', 'steps', 'construction')
             AND (name IS NOT NULL
               OR oneway IN ('yes', '-1')
               OR junction IN ('roundabout'))

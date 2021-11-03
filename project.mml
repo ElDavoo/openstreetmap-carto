@@ -41,7 +41,6 @@ Stylesheet:
   - style/road-colors-generated.mss
   - style/roads.mss
   - style/placenames.mss
-  - style/ferry-routes.mss
   - style/aerialways.mss
   - style/admin.mss
   - style/golf.mss
@@ -507,20 +506,6 @@ Layer:
     properties:
       cache-features: true
       minzoom: 13
-  - id: ferry-routes
-    geometry: linestring
-    <<: *extents
-    Datasource:
-      <<: *osm2pgsql
-      table: |-
-        (SELECT
-            way
-          FROM planet_osm_line
-          WHERE route = 'ferry'
-            AND osm_id > 0
-        ) AS ferry_routes
-    properties:
-      minzoom: 8
   - id: turning-circle-casing
     geometry: point
     <<: *extents

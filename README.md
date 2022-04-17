@@ -1,6 +1,13 @@
-# OpenStreetMap Carto
+# OpenStreetMap Carto Clean
 
-![screenshot](https://raw.github.com/gravitystorm/openstreetmap-carto/master/preview.png)
+![image](https://user-images.githubusercontent.com/7345120/163731671-3020f5aa-8f75-40a5-92d9-b96f39dae396.png)
+
+(Ignore red path and grey markers)
+
+This is a fork of OSM Carto that focuses on a clean design for roads. It has been used for an university project.  
+Buildings and areas have been removed (apart from water), along with ped-only roads and text (except road names).
+
+------
 
 These are the CartoCSS map stylesheets for the Standard map layer on [OpenStreetMap.org](https://www.openstreetmap.org).
 
